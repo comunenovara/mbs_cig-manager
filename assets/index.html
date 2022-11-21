@@ -109,10 +109,23 @@
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         if (input.value) {
-            socket.emit('message', {
+            var msg = {
                 to: reciver.value,
                 message: input.value
-            });
+            }
+            socket.emit('message', msg);
+
+            {
+                msg.sender = me;
+                var item = document.createElement('li');
+                item.textContent = msg.sender + ": " + msg.message;
+                if (msg.sender == me) {
+                    item.className = "right_message";
+                }
+                messages.appendChild(item);
+                var messageBox = document.getElementById('messagesBox');
+                messageBox.scrollTop = messageBox.scrollHeight;
+            }
             input.value = '';
         }
     });
@@ -146,14 +159,13 @@
                 break;
             default:
                 // TEXT
-                var item = document.createElement('li');
-                item.textContent = msg.sender + ": " + msg.message;
-                if (msg.sender == me) {
-                    item.className = "right_message";
+                if (msg.sender != me) {
+                    var item = document.createElement('li');
+                    item.textContent = msg.sender + ": " + msg.message;
+                    messages.appendChild(item);
+                    var messageBox = document.getElementById('messagesBox');
+                    messageBox.scrollTop = messageBox.scrollHeight;
                 }
-                messages.appendChild(item);
-                var messageBox = document.getElementById('messagesBox');
-                messageBox.scrollTop = messageBox.scrollHeight;
                 break;
         }
     });
