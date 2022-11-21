@@ -11,7 +11,10 @@
 	},
 	"author": "",
 	"license": "ISC",
-	"dependencies": {},
+	"dependencies": {
+		"cors": "^2.8.5",
+		"express": "^4.17.2"
+	},
 	"devDependencies": {
 		"@types/iconv": "^2.1.16",
 		"@types/node": "^7.0.5",
