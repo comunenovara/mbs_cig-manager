@@ -2,7 +2,6 @@ import { Web } from "./web";
 
 async function main() {
 	let web = new Web();
-
 	web.start();
 }
 
