@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"module": "commonjs",
+		"lib": [
+			"es2018",
+      		"DOM"
+		],
+		"allowJs": true,
+		"outDir": "dist/app",
+		"rootDir": "src",
+		"strict": true,
+		"noImplicitAny": true,
+		"esModuleInterop": true,
+		"resolveJsonModule": true
+	}
+}
