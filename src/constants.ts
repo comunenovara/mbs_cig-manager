@@ -1,7 +1,6 @@
 import { ElementType, Elements } from "./cig-manager/file-structure-tools";
 
 export const MAIN_FOLDER_PATH = "/home/stefano/dev/project/novara/back/cig-manager/test";
-
 export const SYSTEM_FOLDER_PATH = MAIN_FOLDER_PATH + "/_sistema";
 
 export const SYSTEM_STRUCTURE: Elements = {

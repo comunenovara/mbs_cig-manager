@@ -5,7 +5,6 @@ import * as fse from 'fs-extra';
 
 export class CigManager {
 
-
 	init() {
 		let fileStructureTool: FileStructureTool = new FileStructureTool();
 		fileStructureTool.prepareStructure(SYSTEM_FOLDER_PATH, SYSTEM_STRUCTURE);
