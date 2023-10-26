@@ -1,7 +1,16 @@
 import { ElementType, Elements } from "./cig-manager/file-structure-tools";
 
-export const MAIN_FOLDER_PATH = "/home/stefano/dev/project/novara/back/cig-manager/test";
-export const SYSTEM_FOLDER_PATH = MAIN_FOLDER_PATH + "/_sistema";
+let mainFolderPath = "/home/stefano/dev/project/novara/back/cig-manager/test";
+if (process.env.MAIN_FOLDER_PATH !== undefined) {
+	mainFolderPath = process.env.MAIN_FOLDER_PATH;
+}
+export const MAIN_FOLDER_PATH = mainFolderPath;
+
+let systemFolderPath = MAIN_FOLDER_PATH + "/_sistema";
+if (process.env.SYSTEM_FOLDER_PATH !== undefined) {
+	systemFolderPath = process.env.SYSTEM_FOLDER_PATH;
+}
+export const SYSTEM_FOLDER_PATH = systemFolderPath;
 
 export const SYSTEM_STRUCTURE: Elements = {
 	"index": {
