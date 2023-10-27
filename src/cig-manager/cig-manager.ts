@@ -1,9 +1,12 @@
+import { Channel, Connection, connect } from "amqplib";
 import { SYSTEM_STRUCTURE, SYSTEM_FOLDER_PATH, MAIN_FOLDER_PATH } from "../constants";
 import { FileStructureTool } from "./file-structure-tools";
 import * as fs from 'fs';
 import * as fse from 'fs-extra';
 
 export class CigManager {
+
+
 
 	init() {
 		let fileStructureTool: FileStructureTool = new FileStructureTool();
@@ -14,11 +17,22 @@ export class CigManager {
 		} else {
 			console.log("Struttura corretta!");
 		}
+
+		this.connectToRabbit();
 	}
 
-	createCig(year: number, cig: string, description: string) {
+	private channel: Channel | undefined;
+
+	private async connectToRabbit() {
+		const connection: Connection = await connect('amqp://user:password@rabbit:5672');
+		this.channel = await connection.createChannel();
+		await this.channel.assertQueue('myQueue');
+		console.log("Connessione avviata");
+	}
+
+	async createCig(year: number, cig: string, description: string) {
 		//CONTROLLI
-		
+
 		let result;
 
 		//ESEGUO
@@ -30,11 +44,12 @@ export class CigManager {
 
 		// preparo le variabili
 		let cigFolderPath;
+		let cigFolderName;
 		{
 			let yearIndex = this.getCigIncremental(year);
 			result = yearIndex;
-			let cigFolderName = yearIndex+"_"+cig+"_ "+description;
-			cigFolderPath = yearFolderPath+"/"+cigFolderName;
+			cigFolderName = yearIndex + "_" + cig + "_ " + description;
+			cigFolderPath = yearFolderPath + "/" + cigFolderName;
 		}
 
 		// creo cartella 
@@ -44,10 +59,17 @@ export class CigManager {
 		this.addCigIncremental(year);
 
 		// aggiungo contenuto a cartella
-		fse.copySync(SYSTEM_FOLDER_PATH+"/modello/", cigFolderPath, { overwrite: true });
+		fse.copySync(SYSTEM_FOLDER_PATH + "/modello/", cigFolderPath, { overwrite: true });
 
 		// setto permessi alle cartelle
-		// Get-Acl -Path 'R:\Gestione CIG\_sistema\permessi\' | Set-Acl -Path "R:\Gestione CIG\2022\1_BB123456_ Manutenzione cupola\1_ Avvio procedura\"
+		let comands: any = "";
+		for (let folder in SYSTEM_STRUCTURE.modello.child) {
+			comands += `Get-Acl -Path 'R:\\Gestione CIG\\_sistema\\permessi\\' | Set-Acl -Path "R:\\Gestione CIG\\${year}\\${cigFolderName}\\${folder}\"\n`;
+		}
+
+		if(this.channel) {
+			this.channel.sendToQueue('myQueue', Buffer.from(comands))
+		}
 
 		return result;
 	}
@@ -72,8 +94,8 @@ export class CigManager {
 				fs.writeFileSync(indexYearPath, "1");
 			}
 			index = +fs.readFileSync(indexYearPath, { encoding: 'utf8', flag: 'r' });
-			let newIndex: number = index+1;
-			fs.writeFileSync(indexYearPath, newIndex+"");
+			let newIndex: number = index + 1;
+			fs.writeFileSync(indexYearPath, newIndex + "");
 		}
 		return index;
 	}

@@ -38,7 +38,7 @@ export class Rest {
 	}
 
 	cigManager: CigManager = new CigManager();
-	private appConfig() {
+	private async appConfig() {
 		this.cigManager.init();
 
 		this.express.get(MAIN_PATH + "/api/test", async (req: Request, res: Response) => this.test(req, res));
@@ -76,7 +76,7 @@ export class Rest {
 			let cig: string = "" + req.query.cig;
 			let description: string = "" + req.query.description;
 
-			let yearIndex = this.cigManager.createCig(year, cig, description);
+			let yearIndex = await this.cigManager.createCig(year, cig, description);
 
 			res.status(200).json({
 				message: "Cig created",
