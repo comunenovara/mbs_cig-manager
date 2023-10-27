@@ -76,11 +76,14 @@ export class Rest {
 			let cig: string = "" + req.query.cig;
 			let description: string = "" + req.query.description;
 
-			this.cigManager.createCig(year, cig, description);
+			let yearIndex = this.cigManager.createCig(year, cig, description);
 
 			res.status(200).json({
-				message: "hello api",
-				year: year
+				message: "Cig created",
+				yearIndex: yearIndex,
+				year: year,
+				cig: cig,
+				description: description
 			});
 		} catch (e) {
 			res.status(500).json({

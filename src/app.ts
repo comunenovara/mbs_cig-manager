@@ -5,7 +5,7 @@ async function main() {
 	web.start();
 }
 
-let port = "3001";
+let port = "3002";
 if (process.env.PORT !== undefined) {
 	port = process.env.PORT;
 }

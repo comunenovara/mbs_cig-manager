@@ -19,6 +19,8 @@ export class CigManager {
 	createCig(year: number, cig: string, description: string) {
 		//CONTROLLI
 		
+		let result;
+
 		//ESEGUO
 		let yearFolderPath = MAIN_FOLDER_PATH + '/' + year;
 		if (!fs.existsSync(yearFolderPath)) {
@@ -30,6 +32,7 @@ export class CigManager {
 		let cigFolderPath;
 		{
 			let yearIndex = this.getCigIncremental(year);
+			result = yearIndex;
 			let cigFolderName = yearIndex+"_"+cig+"_ "+description;
 			cigFolderPath = yearFolderPath+"/"+cigFolderName;
 		}
@@ -42,6 +45,11 @@ export class CigManager {
 
 		// aggiungo contenuto a cartella
 		fse.copySync(SYSTEM_FOLDER_PATH+"/modello/", cigFolderPath, { overwrite: true });
+
+		// setto permessi alle cartelle
+		// Get-Acl -Path 'R:\Gestione CIG\_sistema\permessi\' | Set-Acl -Path "R:\Gestione CIG\2022\1_BB123456_ Manutenzione cupola\1_ Avvio procedura\"
+
+		return result;
 	}
 
 	private getCigIncremental(year: number): number {
