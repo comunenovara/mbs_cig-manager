@@ -24,9 +24,8 @@ export class CigManager {
 	private channel: Channel | undefined;
 
 	private async connectToRabbit() {
-		const connection: Connection = await connect('amqp://user:password@rabbit:5672');
+		const connection: Connection = await connect('amqp://user:passq@rabbit:5672');
 		this.channel = await connection.createChannel();
-		await this.channel.assertQueue('myQueue');
 		console.log("Connessione avviata");
 	}
 
@@ -68,7 +67,7 @@ export class CigManager {
 		}
 
 		if(this.channel) {
-			this.channel.sendToQueue('myQueue', Buffer.from(comands))
+			this.channel.publish('channel', 'default', Buffer.from(comands))
 		}
 
 		return result;
