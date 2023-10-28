@@ -1,5 +1,5 @@
 import { Channel, Connection, connect } from "amqplib";
-import { SYSTEM_STRUCTURE, SYSTEM_FOLDER_PATH, MAIN_FOLDER_PATH } from "../constants";
+import { SYSTEM_STRUCTURE, SYSTEM_FOLDER_PATH, MAIN_FOLDER_PATH, RABBIT_USER, RABBIT_PASSWORD, RABBIT_SERVER } from "../constants";
 import { FileStructureTool } from "./file-structure-tools";
 import * as fs from 'fs';
 import * as fse from 'fs-extra';
@@ -24,7 +24,7 @@ export class CigManager {
 	private channel: Channel | undefined;
 
 	private async connectToRabbit() {
-		const connection: Connection = await connect('amqp://user:passq@rabbit:5672');
+		const connection: Connection = await connect(`amqp://${RABBIT_USER}:${RABBIT_PASSWORD}@${RABBIT_SERVER}`);
 		this.channel = await connection.createChannel();
 		console.log("Connessione avviata");
 	}

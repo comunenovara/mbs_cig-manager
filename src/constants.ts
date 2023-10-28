@@ -1,6 +1,30 @@
 import { ElementType, Elements } from "./cig-manager/file-structure-tools";
 
-let mainFolderPath = "/home/stefano/dev/project/novara/back/cig-manager/test";
+let rabbitServer = "rabbit:5672";
+if (process.env.RABBIT_SERVER !== undefined) {
+	rabbitServer = process.env.RABBIT_SERVER;
+}
+export const RABBIT_SERVER = rabbitServer;
+
+let rabbitUsername = "user";
+if (process.env.RABBIT_USER !== undefined) {
+	rabbitUsername = process.env.RABBIT_USER;
+}
+export const RABBIT_USER = rabbitUsername;
+
+let rabbitPassword = "pass";
+if (process.env.RABBIT_PASSWORD !== undefined) {
+	rabbitPassword = process.env.RABBIT_PASSWORD;
+}
+export const RABBIT_PASSWORD = rabbitPassword;
+
+
+
+
+
+
+
+let mainFolderPath = "/home/stefano/dev/project/novara/mbs/back/cig-manager/test";
 if (process.env.MAIN_FOLDER_PATH !== undefined) {
 	mainFolderPath = process.env.MAIN_FOLDER_PATH;
 }
