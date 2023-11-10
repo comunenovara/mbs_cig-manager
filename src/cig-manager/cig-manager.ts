@@ -8,7 +8,7 @@ export class CigManager {
 
 
 
-	init() {
+	async init() {
 		let fileStructureTool: FileStructureTool = new FileStructureTool();
 		fileStructureTool.prepareStructure(SYSTEM_FOLDER_PATH, SYSTEM_STRUCTURE);
 		let toFix = fileStructureTool.folderCheck(SYSTEM_FOLDER_PATH, SYSTEM_STRUCTURE);
@@ -18,15 +18,19 @@ export class CigManager {
 			console.log("Struttura corretta!");
 		}
 
-		this.connectToRabbit();
+		await this.connectToRabbit();
 	}
 
 	private channel: Channel | undefined;
 
 	private async connectToRabbit() {
-		const connection: Connection = await connect(`amqp://${RABBIT_USER}:${RABBIT_PASSWORD}@${RABBIT_SERVER}`);
-		this.channel = await connection.createChannel();
-		console.log("Connessione avviata");
+		try {
+			const connection: Connection = await connect(`amqp://${RABBIT_USER}:${RABBIT_PASSWORD}@${RABBIT_SERVER}`);
+			this.channel = await connection.createChannel();
+			console.log("Connessione avviata");
+		} catch (e) {
+			console.log("Connessione non avviata:", e);
+		}
 	}
 
 	async createCig(year: number, cig: string, description: string) {

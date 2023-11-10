@@ -2,7 +2,7 @@ import { Web } from "./web";
 
 async function main() {
 	let web = new Web();
-	web.start();
+	await web.start();
 }
 
 let port = "3002";

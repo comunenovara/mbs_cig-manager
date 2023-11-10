@@ -12,16 +12,19 @@ export class Rest {
 
 	constructor() {
 		this.express = express();
-		this.mainConfig();
-		this.appConfig();
-		this.endConfig();
+	}
+
+	async init() {
+		await this.mainConfig();
+		await this.appConfig();
+		await this.endConfig();
 	}
 
 	getExpress(): core.Express {
 		return this.express;
 	}
 
-	private mainConfig() {
+	private async mainConfig() {
 		this.express.use(cors());
 		this.express.use(bodyParser.json());
 		this.express.use(bodyParser.urlencoded({ extended: true }));
@@ -31,7 +34,7 @@ export class Rest {
 		this.express.options('*', cors());
 	}
 
-	private endConfig() {
+	private async endConfig() {
 		this.express.get(MAIN_PATH + '/*', (req: any, res: any) => {
 			res.sendFile(process.cwd() + "/assets/index.html")
 		});
@@ -39,7 +42,7 @@ export class Rest {
 
 	cigManager: CigManager = new CigManager();
 	private async appConfig() {
-		this.cigManager.init();
+		await this.cigManager.init();
 
 		this.express.get(MAIN_PATH + "/api/test", async (req: Request, res: Response) => this.test(req, res));
 

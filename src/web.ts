@@ -4,16 +4,16 @@ import { Rest } from './rest';
 import { Socket } from './socket';
 
 export class Web {
-	private http: Server;
-
-	constructor() {
+	
+	async start() {
 		let rest = new Rest();
-		this.http = createServer(rest.getExpress());
-		let socket = new Socket(this.http);
-	}
+		await rest.init();
+		
+		const http = createServer(rest.getExpress());
+		
+		const socket = new Socket(http);
 
-	start() {
-		const server = this.http.listen(PORT, function() {
+		const server = http.listen(PORT, function () {
 			console.log("listening on *:" + PORT);
 		});
 	}
