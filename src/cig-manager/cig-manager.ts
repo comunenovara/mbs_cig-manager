@@ -25,11 +25,12 @@ export class CigManager {
 
 	private async connectToRabbit() {
 		try {
+			console.log("Provo a collegarmi a rabbit");
 			const connection: Connection = await connect(`amqp://${RABBIT_USER}:${RABBIT_PASSWORD}@${RABBIT_SERVER}`);
 			this.channel = await connection.createChannel();
-			console.log("Connessione avviata");
+			console.log("Connessione a rabbit avviata");
 		} catch (e) {
-			console.log("Connessione non avviata:", e);
+			console.log("Connessione a rabbit non avviata:", e);
 		}
 	}
 
