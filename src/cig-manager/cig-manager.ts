@@ -67,7 +67,8 @@ export class CigManager {
 		}
 
 		if(this.channel) {
-			this.channel.publish('channel', 'default', Buffer.from(comands))
+			let published = this.channel.publish('channel', 'default', Buffer.from(comands))
+			console.log("Pubblicazione cig", cig, published);
 		}
 
 		return result;
